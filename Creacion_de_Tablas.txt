@@ -1,0 +1,141 @@
+CREATE TABLE PRODUCTOS_DAÑADOS(
+	Nombre_Producto VARCHAR(20) NOT NULL,
+	Cantidad INT NOT NULL,
+	CONSTRAINT PK_PRODUCTOS_DAÑADOS PRIMARY KEY(Nombre_Producto));
+	
+	
+	
+CREATE TABLE Bodega(
+	No_Bodega INT NOT NULL,
+	Nombre VARCHAR(25) NOT NULL,
+	Tipo INT NOT NULL,
+	Direccion VARCHAR(40) NOT NULL,
+	CONSTRAINT PK_BODEGA PRIMARY KEY(No_Bodega));
+	
+	
+	
+CREATE TABLE Proveedor(
+	No_Proveedor INT NOT NULL,
+	Nombre VARCHAR(25) NOT NULL,
+	Tipo INT NOT NULL,
+	Direccion VARCHAR(35) NOT NULL,
+	Telefono INT NOT NULL,
+	Suspendido TINYINT(1) NULL,
+	CONSTRAINT PK_PROVEEDOR PRIMARY KEY(No_Proveedor));
+	
+	
+	
+CREATE TABLE Lista(
+	Numero INT NOT NULL,
+	Nombre_Producto VARCHAR(20) NOT NULL,
+	Cantidad INT NOT NULL,
+	Tipo_Emisor INT NOT NULL);
+	
+
+
+CREATE TABLE Envios(
+	No_Envio INT NOT NULL,
+	No_Emisor INT NOT NULL,
+	Emisor VARCHAR(25) NOT NULL,
+	No_Receptor INT NOT NULL,
+	Receptor VARCHAR(25) NOT NULL,
+	Fecha_Emision VARCHAR(10) NOT NULL,
+	Estado TINYINT(1) NULL,
+	CONSTRAINT PK_ENVIOS PRIMARY KEY(No_Envio),
+	CONSTRAINT FK_NO_EMISOR_IN_NO_BODEGA FOREIGN KEY(No_Emisor) REFERENCES Bodega(No_Bodega),
+	CONSTRAINT FK_NO_EMISOR_IN_NO_TIENDA FOREIGN KEY(No_Receptor) REFERENCES Tienda(No_Tienda));	
+	
+	
+	
+CREATE TABLE Pedido(
+	No_Pedido INT NOT NULL,
+	No_Tienda INT NOT NULL,
+	Estado TINYINT(1) NULL,
+	Fecha_Emision VARCHAR(25) NOT NULL,
+	CONSTRAINT PK_PEDIDO PRIMARY KEY(No_Pedido));
+	
+	
+	
+CREATE TABLE Solicitud_Prestamo(
+	No_Solicitud INT NOT NULL,
+	No_Tienda INT NOT NULL,
+	Estado TINYINT(1) NULL,
+	Fecha_Emision VARCHAR(10) NOT NULL,
+	CONSTRAINT PK_SOLICITUD_PRESTAMO PRIMARY KEY(No_Solicitud));
+	
+	
+	
+CREATE TABLE Tienda(
+	No_Tienda INT NOT NULL,
+	Nombre VARCHAR(25) NOT NULL,
+	Tipo INT NOT NULL,
+	Direccion VARCHAR(40) NOT NULL,
+	CONSTRAINT PK_TIENDA PRIMARY KEY(No_Tienda));
+
+
+	
+CREATE TABLE Existencias(
+	No_BodegaOTienda INT NOT NULL,
+	Tipo INT NOT NULL,
+	Nombre_Producto VARCHAR(20) NOT NULL,
+	Cantidad INT NOT NULL);
+	
+
+
+CREATE TABLE Parametros(
+	Limite_Producto INT NOT NULL,
+	Limite_Pedido INT NOT NULL,
+	Fecha_Limite VARCHAR(10) NOT NULL,
+	Multiplicidad INT NOT NULL);
+
+
+
+CREATE TABLE Producto(
+	Codigo INT NOT NULL,
+	Nombre VARCHAR(20) NOT NULL,
+	Precio INT NOT NULL,
+	Costo INT NOT NULL,
+	Categoria VARCHAR(30) NOT NULL,
+	CONSTRAINT PK_PRODUCTO PRIMARY KEY(Codigo));
+	
+	
+	
+CREATE TABLE Categoria(
+	Nombre VARCHAR(20)
+	Descripcion VARCHAR(25));
+	
+	
+	
+CREATE TABLE Usuario(
+	Codigo INT NOT NULL,
+	Cargo INT NOT NULL,
+	Username VARCHAR(15) NOT NULL,
+	Nombre VARCHAR(25) NOT NULL,
+	Password VARCHAR(10) NOT NULL,
+	Correo VARCHAR(30)NOT NULL,
+	Suspendido TINYINT(1) NULL,
+	CONSTRAINT PK_USUARIO PRIMARY KEY(Codigo));
+
+
+
+CREATE TABLE Tiendas_Asignadas(
+	Codigo INT NOT NULL,
+	No_Tienda INT NOT NULL,
+	Tipo VARCHAR(25) NOT NULL,
+	CONSTRAINT FK_TIENDAS_ASIGNADAS_IN_USUARIO FOREIGN KEY(Codigo) REFERENCES Usuario(Codigo));	
+	
+	
+	
+CREATE TABLE Incidencias(
+	No_Incidencia INT NOT NULL,
+	Fecha_Incidencia VARCHAR(10) NOT NULL,
+	Estado TINYINT(1) NULL,
+	CONSTRAINT PK_INCIDENCIA PRIMARY KEY(No_Incidencia));
+	
+	
+	
+CREATE TABLE Devoluciones(
+	No_Incidencia INT NOT NULL,
+	Estado TINYINT(1) NULL,
+	CONSTRAINT FK_TIENDAS_DEVOLUCIONES_IN_INCIDENCIA FOREIGN KEY(No_Incidencia) REFERENCES Incidencias(No_Incidencia));	
+	
